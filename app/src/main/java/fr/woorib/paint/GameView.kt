@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import fr.woorib.paint.overlay.ImageOverlay
+import fr.woorib.paint.overlay.ImageOverlayWrapper
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
     private val thread: GameThread
@@ -31,7 +32,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     private fun initImage() {
         image = ImageSelecter.select(resources, screenWidth, screenHeight)
-        imageOverlay = ImageOverlay(screenWidth, screenHeight)
+        imageOverlay = ImageOverlayWrapper(screenWidth, screenHeight)
     }
 
     override fun surfaceDestroyed(p0: SurfaceHolder?){
@@ -61,7 +62,9 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
      * Function to update the positions of player and game objects
      */
     fun update() {
-        imageOverlay.update(touched, touchedX, touchedY)
+        if (imageOverlay.update(touched, touchedX, touchedY)) {
+            initImage()
+        }
     }
 
     /**

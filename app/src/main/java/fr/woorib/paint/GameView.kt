@@ -32,7 +32,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     private fun initImage() {
         image = ImageSelecter.select(resources, screenWidth, screenHeight)
-        imageOverlay = ImageOverlayWrapper(screenWidth, screenHeight)
+        imageOverlay = ImageOverlayWrapper(screenWidth, screenHeight, resources)
     }
 
     override fun surfaceDestroyed(p0: SurfaceHolder?){

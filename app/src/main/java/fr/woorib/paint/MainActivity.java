@@ -2,6 +2,7 @@ package fr.woorib.paint;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
@@ -14,4 +15,10 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
     }
+
+    @Override
+    public void onBackPressed() {
+        // disabled
+    }
+
 }

@@ -8,7 +8,7 @@ class ImageHider(width: Int, height : Int) : ImageOverlay {
     private val c = Canvas(bp)
     private var transparencyIncreased = false
 
-    private var clear = false
+    private var overlayReturn = OverlayReturnEnum.DEFAULT
 
     /**
      * Initializing overlay as a hiding frame that needs to be swiped away
@@ -19,8 +19,8 @@ class ImageHider(width: Int, height : Int) : ImageOverlay {
         c.drawRect(0.toFloat(),0.toFloat(),width.toFloat(), height.toFloat(), p)
     }
 
-    override fun update(touched: Boolean, touchedX: Int, touchedY: Int) : Boolean {
-        if (touched && !clear) {
+    override fun update(touched: Boolean, touchedX: Int, touchedY: Int) : OverlayReturnEnum {
+        if (touched && overlayReturn != OverlayReturnEnum.CLEAR) {
             clearPart(touchedX, touchedY)
             transparencyIncreased = true
         }
@@ -28,7 +28,7 @@ class ImageHider(width: Int, height : Int) : ImageOverlay {
             transparencyIncreased = false
             checkClearPercentage()
         }
-        return clear
+        return overlayReturn
     }
 
     private fun clearPart(touchedX: Int, touchedY: Int) {
@@ -47,12 +47,12 @@ class ImageHider(width: Int, height : Int) : ImageOverlay {
         val totalTransparent = pixels.count { it == Color.TRANSPARENT }
 
         if ((totalTransparent.toFloat() / (bp.width * bp.height).toFloat()) > 0.75) {
-            clear = true
+            overlayReturn = OverlayReturnEnum.CLEAR
         }
     }
 
     override fun draw(canvas : Canvas) {
-        if (!clear) {
+        if (overlayReturn != OverlayReturnEnum.CLEAR) {
             canvas.drawBitmap(bp, 0.toFloat(), 0.toFloat(), null)
         }
     }

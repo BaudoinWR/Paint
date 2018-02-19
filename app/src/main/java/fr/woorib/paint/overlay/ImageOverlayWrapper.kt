@@ -11,11 +11,11 @@ class ImageOverlayWrapper(private val width: Int, private val height: Int, priva
         imageOverlay.draw(canvas)
     }
 
-    override fun update(touched: Boolean, touchedX: Int, touchedY: Int) : Boolean {
-        val done = imageOverlay.update(touched, touchedX, touchedY)
-        if (imageOverlay is ImageHider && done) {
+    override fun update(touched: Boolean, touchedX: Int, touchedY: Int) : OverlayReturnEnum {
+        var done = imageOverlay.update(touched, touchedX, touchedY)
+        if (done == OverlayReturnEnum.CLEAR) {
             imageOverlay = UIOverlay(width, resources)
-            return false
+            done = OverlayReturnEnum.DEFAULT
         }
         return done
     }

@@ -18,10 +18,10 @@ class UIOverlay(private val width: Int, resources : Resources) : ImageOverlay {
         canvas.drawBitmap(arrow, (width - arrow.width).toFloat(), 0.toFloat(), null)
     }
 
-    override fun update(touched: Boolean, touchedX: Int, touchedY: Int): Boolean {
+    override fun update(touched: Boolean, touchedX: Int, touchedY: Int): OverlayReturnEnum {
         if (rect.contains(touchedX, touchedY)) {
-            return true
+            return OverlayReturnEnum.RESTART
         }
-        return false
+        return OverlayReturnEnum.DEFAULT
     }
 }

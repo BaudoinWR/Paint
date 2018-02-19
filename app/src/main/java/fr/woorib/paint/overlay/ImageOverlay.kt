@@ -12,5 +12,5 @@ interface ImageOverlay {
      * Reacts to touch on the screen
      * Returns true if it's ready for the caller to switch to a new overlay
      */
-    fun update(touched: Boolean, touchedX: Int, touchedY: Int) : Boolean
+    fun update(touched: Boolean, touchedX: Int, touchedY: Int) : OverlayReturnEnum
 }

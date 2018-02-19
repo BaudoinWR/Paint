@@ -9,6 +9,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import fr.woorib.paint.overlay.ImageOverlay
 import fr.woorib.paint.overlay.ImageOverlayWrapper
+import fr.woorib.paint.overlay.OverlayReturnEnum
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
     private val thread: GameThread
@@ -62,8 +63,9 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
      * Function to update the positions of player and game objects
      */
     fun update() {
-        if (imageOverlay.update(touched, touchedX, touchedY)) {
-            initImage()
+        when (imageOverlay.update(touched, touchedX, touchedY)) {
+            OverlayReturnEnum.CLEAR, OverlayReturnEnum.DEFAULT -> Unit
+            OverlayReturnEnum.RESTART -> initImage()
         }
     }
 

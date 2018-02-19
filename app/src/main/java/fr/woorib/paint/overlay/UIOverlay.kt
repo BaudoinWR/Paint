@@ -6,21 +6,39 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import fr.woorib.paint.R
 
-class UIOverlay(private val width: Int, resources : Resources) : ImageOverlay {
+class UIOverlay(private val width: Int, private val heigth: Int, resources: Resources) : ImageOverlay {
     private val arrow = BitmapFactory.decodeResource(resources, R.drawable.arrow)
-    private var rect : Rect
+    private val close = BitmapFactory.decodeResource(resources, R.drawable.close)
+    private val options = BitmapFactory.decodeResource(resources, R.drawable.options)
+    private var nextRect: Rect
+    private var closeRect: Rect
+    private var optionsRect: Rect
+
 
     init {
-        rect = Rect(width - arrow.width, 0, width, arrow.height)
+        nextRect = Rect(width - arrow.width, (heigth - arrow.height) / 2, width, (heigth / 2 + arrow.height))
+        closeRect = Rect(0, 0, close.width, close.height)
+        optionsRect = Rect(width - options.width, 0, width, options.height)
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawBitmap(arrow, (width - arrow.width).toFloat(), 0.toFloat(), null)
+        canvas.drawBitmap(arrow, (width - arrow.width).toFloat(), ((heigth - arrow.height).toFloat() / 2), null)
+        canvas.drawBitmap(close, 0.toFloat(), 0.toFloat(), null)
+        canvas.drawBitmap(options, (width - options.width).toFloat(), 0.toFloat(), null)
     }
 
     override fun update(touched: Boolean, touchedX: Int, touchedY: Int): OverlayReturnEnum {
-        if (rect.contains(touchedX, touchedY)) {
+        if (!touched) {
+            return OverlayReturnEnum.DEFAULT
+        }
+        if (nextRect.contains(touchedX, touchedY)) {
             return OverlayReturnEnum.RESTART
+        }
+        if (closeRect.contains(touchedX, touchedY)) {
+            return OverlayReturnEnum.CLOSE
+        }
+        if (optionsRect.contains(touchedX, touchedY)) {
+            return OverlayReturnEnum.CONFIG
         }
         return OverlayReturnEnum.DEFAULT
     }

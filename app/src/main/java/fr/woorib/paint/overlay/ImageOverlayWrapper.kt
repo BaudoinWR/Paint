@@ -13,9 +13,15 @@ class ImageOverlayWrapper(private val width: Int, private val height: Int, priva
 
     override fun update(touched: Boolean, touchedX: Int, touchedY: Int) : OverlayReturnEnum {
         var done = imageOverlay.update(touched, touchedX, touchedY)
-        if (done == OverlayReturnEnum.CLEAR) {
-            imageOverlay = UIOverlay(width, resources)
-            done = OverlayReturnEnum.DEFAULT
+        when (done) {
+            OverlayReturnEnum.CLEAR -> {
+                imageOverlay = UIOverlay(width, height, resources)
+                done = OverlayReturnEnum.DEFAULT
+            }
+            OverlayReturnEnum.CONFIG -> {
+                imageOverlay = ConfigOverlay()
+            }
+            else -> Unit
         }
         return done
     }

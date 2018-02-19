@@ -1,5 +1,6 @@
 package fr.woorib.paint
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
@@ -64,8 +65,9 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
      */
     fun update() {
         when (imageOverlay.update(touched, touchedX, touchedY)) {
-            OverlayReturnEnum.CLEAR, OverlayReturnEnum.DEFAULT -> Unit
             OverlayReturnEnum.RESTART -> initImage()
+            OverlayReturnEnum.CLOSE -> (context as Activity).finish()
+            else -> Unit
         }
     }
 

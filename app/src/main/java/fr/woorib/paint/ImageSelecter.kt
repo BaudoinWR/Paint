@@ -8,10 +8,10 @@ import java.util.*
 
 class ImageSelecter {
     companion object {
-        fun select(resources: Resources, screenWidth: Int, screenHeight: Int) : Bitmap{
+        fun select(resources: Resources) : Bitmap{
             val f = R.raw::class.java.fields
             val filtered = f.filter { x -> try {x.getInt(R.raw::class);  true } catch (e: Throwable) {false}}
-            return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, randomResource(filtered), null), screenWidth, screenHeight, false)
+            return BitmapFactory.decodeResource(resources, randomResource(filtered), null)
         }
 
         private fun randomResource(filtered: List<Field>): Int {

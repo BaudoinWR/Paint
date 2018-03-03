@@ -6,7 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import fr.woorib.paint.R
 
-class UIOverlay(private val width: Int, private val heigth: Int, resources: Resources) : ImageOverlay {
+class UIOverlay(private val width: Int, private val height: Int, resources: Resources) : ImageOverlay {
     private val arrow = BitmapFactory.decodeResource(resources, R.drawable.arrow)
     private val close = BitmapFactory.decodeResource(resources, R.drawable.close)
     private val options = BitmapFactory.decodeResource(resources, R.drawable.options)
@@ -16,13 +16,13 @@ class UIOverlay(private val width: Int, private val heigth: Int, resources: Reso
 
 
     init {
-        nextRect = Rect(width - arrow.width, (heigth - arrow.height) / 2, width, (heigth / 2 + arrow.height))
+        nextRect = Rect(width - arrow.width, (height - arrow.height) / 2, width, (height / 2 + arrow.height))
         closeRect = Rect(0, 0, close.width, close.height)
         optionsRect = Rect(width - options.width, 0, width, options.height)
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawBitmap(arrow, (width - arrow.width).toFloat(), ((heigth - arrow.height).toFloat() / 2), null)
+        canvas.drawBitmap(arrow, (width - arrow.width).toFloat(), ((height - arrow.height).toFloat() / 2), null)
         canvas.drawBitmap(close, 0.toFloat(), 0.toFloat(), null)
         canvas.drawBitmap(options, (width - options.width).toFloat(), 0.toFloat(), null)
     }

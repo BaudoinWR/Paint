@@ -2,6 +2,7 @@ package fr.woorib.paint
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Resources
 import android.graphics.*
@@ -10,13 +11,12 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.View
 import fr.woorib.paint.overlay.ImageOverlay
 import fr.woorib.paint.overlay.ImageOverlayWrapper
 import fr.woorib.paint.overlay.OverlayReturnEnum
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
-    private val thread: GameThread
+    private lateinit var thread: GameThread
     private var screenWidth = Resources.getSystem().displayMetrics.widthPixels
     private var screenHeight = Resources.getSystem().displayMetrics.heightPixels
     lateinit var image : Bitmap
@@ -33,13 +33,10 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         // add callback
         holder.addCallback(this)
 
-        // instantiate the game thread
-        thread = GameThread(holder, this)
     }
 
     private fun initImage(newImage : Bitmap) {
         image = newImage
-
         val max = Math.max(screenWidth, screenHeight)
         val min = Math.min(screenWidth, screenHeight)
         if (image.width > image.height) {
@@ -56,6 +53,8 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         imageOverlay = ImageOverlayWrapper(screenWidth, screenHeight, resources)
     }
 
+
+
     override fun surfaceDestroyed(p0: SurfaceHolder?){
         var retry = true
         while (retry) {
@@ -71,8 +70,12 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     }
 
     override fun surfaceCreated(p0: SurfaceHolder?) {
+        // instantiate the game thread
+        thread = GameThread(holder, this)
         if (doInit) {
-            initImage(ImageSelecter.select(resources))
+            initImage(ImageSelector.select(resources))
+        } else {
+            doInit = true
         }
 
         // start the game thread
@@ -88,10 +91,14 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
      */
     fun update() {
         when (imageOverlay.update(touched, touchedX, touchedY)) {
-            OverlayReturnEnum.RESTART -> initImage(ImageSelecter.select(resources))
+            OverlayReturnEnum.RESTART -> initImage(ImageSelector.select(resources))
             OverlayReturnEnum.CLOSE -> (context as Activity).finish()
+            OverlayReturnEnum.CONFIG -> (context as Activity).startActivity(Intent(context, SettingsActivity::class.java))
             else -> Unit
         }
+        //reset touch to avoid applying touches to previous position when returning to view
+        touchedX = -1
+        touchedY = -1
     }
 
     /**

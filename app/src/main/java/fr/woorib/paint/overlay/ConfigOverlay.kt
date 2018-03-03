@@ -7,6 +7,6 @@ class ConfigOverlay : ImageOverlay {
     }
 
     override fun update(touched: Boolean, touchedX: Int, touchedY: Int): OverlayReturnEnum {
-        return OverlayReturnEnum.CLEAR
+        return OverlayReturnEnum.DEFAULT
     }
 }

@@ -56,6 +56,7 @@ class ImageSelector {
                 fileWriter.write("\n")
             }
             fileWriter.close()
+            init(context)
         }
 
     }

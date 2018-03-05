@@ -22,6 +22,8 @@ class SettingsActivity : Activity() {
                     val intent = Intent(this, AlbumSelectActivity::class.java)
                     intent.type = "image/*"
                     intent.action = Intent.ACTION_GET_CONTENT
+                    intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 50);
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                         println("MULTIPLE")
@@ -38,7 +40,7 @@ class SettingsActivity : Activity() {
                     && null != data) {
                 // Get the Image from data
                 val parcelableArrayListExtra = data.getParcelableArrayListExtra<Image>(Constants.INTENT_EXTRA_IMAGES)
-                ImageSelector.possibles = parcelableArrayListExtra.map { it.path }
+                ImageSelector.selectPictures(parcelableArrayListExtra.map { it.path })
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show()

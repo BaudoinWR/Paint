@@ -33,6 +33,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         // add callback
         holder.addCallback(this)
 
+        ImageSelector.init(context)
     }
 
     private fun initImage(newImage : Bitmap) {
